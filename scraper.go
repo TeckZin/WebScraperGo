@@ -8,7 +8,7 @@ import (
 type item struct {
 	Name string   `json:"name"`
 	Menu []string `json:"menu"`
-	Url  string   `json:"url"`
+	Urls []string `json:"urls"`
 }
 
 func main() {
@@ -33,11 +33,27 @@ func main() {
 
 		//fmt.Println(h.ChildText("div.menu a.item"))
 
+		var texts []string
+		var urls []string
+
+		h.ForEach("div.menu a", func(_ int, h *colly.HTMLElement) {
+			//fmt.Println("next")
+
+			texts = append(texts, h.Text)
+			urls = append(urls, h.Attr("href"))
+
+			//fmt.Println(h.Attr("href"))
+
+			//fmt.Println(h.Text)
+
+		})
+
 		item := item{
 			Name: h.ChildText("div.header"),
-			Menu: []string{h.ChildText("div.menu a.item")},
-			Url:  h.ChildAttr("div.menu a.item", "href"),
+			Menu: texts,
+			Urls: urls,
 		}
+
 		//fmt.Println(item.Name)
 		//fmt.Println(item.Menu)
 
@@ -46,6 +62,7 @@ func main() {
 		//fmt.Println(h.Text)
 
 	})
+
 	// interact with button
 	//c.OnHTML("[title=Next]", func(h *colly.HTMLElement) {
 	//	nextPage := h.Request.AbsoluteURL(h.Attr("href"))
