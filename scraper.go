@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gocolly/colly"
-	"strings"
 )
 
 type item struct {
 	Name string   `json:"name"`
 	Menu []string `json:"menu"`
+	Url  string   `json:"url"`
 }
 
 func main() {
@@ -22,7 +22,6 @@ func main() {
 	c.OnHTML("div.content div[class='ui large vertical fluid tabular menu'] div.item", func(h *colly.HTMLElement) {
 		//fmt.Println(h.ChildText("div.item div.header"))
 
-		texts := strings.Split(h.ChildText("div.menu"), "\n")
 		//fmt.Println(h.ChildText("div.menu"))
 		//fmt.Println(len(texts))
 
@@ -36,7 +35,8 @@ func main() {
 
 		item := item{
 			Name: h.ChildText("div.header"),
-			Menu: texts,
+			Menu: []string{h.ChildText("div.menu a.item")},
+			Url:  h.ChildAttr("div.menu a.item", "href"),
 		}
 		//fmt.Println(item.Name)
 		//fmt.Println(item.Menu)
@@ -46,6 +46,11 @@ func main() {
 		//fmt.Println(h.Text)
 
 	})
+	// interact with button
+	//c.OnHTML("[title=Next]", func(h *colly.HTMLElement) {
+	//	nextPage := h.Request.AbsoluteURL(h.Attr("href"))
+	//	c.Visit(nextPage)
+	//})
 
 	err := c.Visit("https://go-colly.org/docs/introduction/start/")
 	if err != nil {
