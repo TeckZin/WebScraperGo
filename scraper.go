@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gocolly/colly"
+	"os"
 )
 
 type item struct {
@@ -76,5 +78,17 @@ func main() {
 	}
 
 	fmt.Println(items)
+
+	content, err := json.Marshal(items)
+
+	if err != nil {
+		fmt.Println("err")
+		return
+	}
+
+	err = os.WriteFile("directories.json", content, 0644)
+	if err != nil {
+		return
+	}
 
 }
