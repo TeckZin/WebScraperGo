@@ -23,8 +23,8 @@ func main() {
 		//fmt.Println(h.ChildText("div.item div.header"))
 
 		texts := strings.Split(h.ChildText("div.menu"), "\n")
-		fmt.Println(h.ChildText("div.menu"))
-		fmt.Println(len(texts))
+		//fmt.Println(h.ChildText("div.menu"))
+		//fmt.Println(len(texts))
 
 		//c.OnHTML("div.menu", func(h2 *colly.HTMLElement) {
 		//	texts = append(texts, h2.ChildText("a.item"))
